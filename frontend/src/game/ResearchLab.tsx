@@ -121,6 +121,7 @@ export function ResearchLab({ target, days, aperture, allowTls, conference, onRe
           <div><span>Muestras usadas</span><strong>{number(current.data.count)}</strong></div>
         </div>
         {target.real && method === 'tls' ? <p>TLS agrupa las cadencias en intervalos de 10 minutos.</p> : null}
+        {current.data.cached ? <p>Resultado precalculado con las observaciones del respaldo.</p> : null}
         <div className="tess-inline tess-actions" role="group" aria-label="Vista del resultado">
           <button type="button" className="button compact" aria-pressed={!phase || !fit} onClick={() => setPhase(false)}>Períodos probados</button>
           <button type="button" className="button compact" disabled={!fit} aria-pressed={phase && Boolean(fit)}

@@ -1,4 +1,6 @@
+import json
 from functools import lru_cache
+from importlib.metadata import PackageNotFoundError, version
 from threading import Lock
 
 import numpy as np
@@ -6,12 +8,42 @@ import numpy as np
 from ..models.requests import Preparation, SearchRequest
 from . import bls, transit
 from .game_observations import simulated_observation
-from .loader import load_dataset
+from .loader import DATA, load_dataset
 from .preprocessing import prepare
-from .validation import DatasetError, nullable
+from .validation import DatasetError, nullable, write_json
 
 
 TLS_LOCK = Lock()
+TLS_DEMO_OPTIONS = Preparation(detrend=False)
+TLS_DEMO_REVISION = 1
+
+
+def _demo_tls_provenance(dataset):
+    return {
+        "csv_sha256": dataset.metadata["csv_sha256"],
+        "preparation": TLS_DEMO_OPTIONS.model_dump(),
+        "tls_version": version("transitleastsquares"),
+        "revision": TLS_DEMO_REVISION,
+    }
+
+
+def _read_demo_tls(dataset):
+    try:
+        provenance = _demo_tls_provenance(dataset)
+        entry = json.loads((DATA / "processed" / "tls-pi-mensae.json").read_text(encoding="utf-8"))
+        if entry["provenance"] == provenance:
+            return {**entry["result"], "cached": True}
+    except (OSError, ValueError, KeyError, PackageNotFoundError):
+        pass
+    return None
+
+
+def publish_demo_tls(dataset):
+    result = _analyze(dataset, None, TLS_DEMO_OPTIONS, "tls")
+    write_json(DATA / "processed" / "tls-pi-mensae.json", {
+        "provenance": _demo_tls_provenance(dataset), "result": result,
+    })
+    return result
 
 
 def _search_tls(curve, maximum):
@@ -62,6 +94,10 @@ def _parity(curve, fit):
 def investigate(target, days, options, method, aperture):
     dataset, offset = (load_dataset(), None) if target == "pi-mensae" else _simulation(target, days, aperture)
     if method == "tls":
+        if target == "pi-mensae" and options == TLS_DEMO_OPTIONS:
+            cached = _read_demo_tls(dataset)
+            if cached is not None:
+                return cached
         # Serializing TLS keeps simultaneous browser requests from duplicating JIT work.
         with TLS_LOCK:
             return _cached_tls(target, days, options.model_dump_json(), dataset.metadata.get("csv_sha256", "sim"), aperture)
@@ -122,5 +158,5 @@ def _analyze(dataset, offset, options, method):
             secondary = float(np.median(1 - curve.flux[halfway] / curve.baseline) * 1e6)
     return {
         **search, "method": method, "folded": folded, "parity": _parity(curve, fit),
-        "limits": [1, maximum], "secondary_depth": secondary,
+        "limits": [1, maximum], "secondary_depth": secondary, "cached": False,
     }

@@ -15,6 +15,7 @@ export type SearchResult = {
   method: AnalysisMethod; periods: number[]; power: (number | null)[]; count: number; limits: [number, number]
   fit: { period: number; epoch: number; duration: number; depth: number } | null
   folded: [number, number, number][]; parity: [number, number] | null; secondary_depth: number | null
+  cached: boolean
 }
 export type Prepared = {
   raw: { time: number[]; values: number[] }; clean: { time: number[]; values: number[] }

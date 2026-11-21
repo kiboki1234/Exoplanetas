@@ -56,3 +56,13 @@ def test_report_requires_period_evidence_and_sensor_rejects_real_target():
     supported = client.post("/api/game/report", json={**statement, "measured_periods": [6.269]}).json()
     assert not unsupported["supported"]
     assert supported["correct"] and supported["supported"] and supported["score"] == 5
+
+
+def test_real_default_tls_uses_the_verified_offline_result():
+    response = client.post("/api/game/analyze", json={
+        "target": "pi-mensae", "days": 24, "method": "tls", "preparation": {"detrend": False},
+    })
+    assert response.is_success
+    result = response.json()
+    assert result["cached"]
+    assert abs(result["fit"]["period"] - 6.2679) < .02

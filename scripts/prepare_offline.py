@@ -1,7 +1,8 @@
-"""Verifica el respaldo científico y precalcula la búsqueda BLS estándar."""
+"""Verifica el respaldo científico y precalcula las búsquedas de demostración."""
 
 from backend.app.models.requests import SearchRequest
 from backend.app.science.bls import search
+from backend.app.science.game_search import publish_demo_tls
 from backend.app.science.loader import DATA, load_dataset
 from backend.app.science.validation import FITS_NAME, sha256
 
@@ -14,6 +15,8 @@ def main():
     peak = result["candidates"][0]
     print(f"Respaldo verificado. BLS: {peak['period']:.6f} d, {peak['depth_ppm']:.1f} ppm, "
           f"{peak['duration_hours']:.2f} h. Fuente: {dataset.metadata['source_uri']}")
+    tls = publish_demo_tls(dataset)
+    print(f"TLS: {tls['fit']['period']:.6f} d, {tls['count']} muestras.")
 
 
 if __name__ == "__main__":
