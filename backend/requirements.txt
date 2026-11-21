@@ -1,0 +1,7 @@
+fastapi==0.129.0
+uvicorn==0.41.0
+lightkurve==2.6.0
+astropy==7.2.0
+numpy==2.4.2
+pandas==2.3.3
+scipy==1.17.0

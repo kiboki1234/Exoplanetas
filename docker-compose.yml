@@ -1,0 +1,12 @@
+services:
+  cosmos:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      COSMOS_ALLOW_MAST: "0"
+    healthcheck:
+      test: ["CMD", "python", "-m", "scripts.check_demo", "--health-only"]
+      interval: 20s
+      timeout: 5s
+      retries: 3

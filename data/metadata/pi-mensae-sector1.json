@@ -1,0 +1,52 @@
+{
+  "object": "Pi Mensae",
+  "tic": 261136679,
+  "mission": "TESS",
+  "author": "SPOC",
+  "sector": 1,
+  "cadence_seconds": 120,
+  "product": "tess2018206045859-s0001-0000000261136679-0120-s_lc.fits",
+  "source_uri": "mast:TESS/product/tess2018206045859-s0001-0000000261136679-0120-s_lc.fits",
+  "source_url": "https://archive.stsci.edu/missions/tess/tid/s0001/0000/0002/6113/6679/tess2018206045859-s0001-0000000261136679-0120-s_lc.fits",
+  "retrieved_utc": "2026-11-21T11:06:57.533848+00:00",
+  "retrieval_timestamp_basis": "fecha de modificación del archivo recibido",
+  "prepared_utc": "2026-11-21T11:26:10.572863+00:00",
+  "retrieval_method": "fits_local",
+  "fits_sha256": "1eecffff3afa7e8c4ad763b6907e62447bacf339968292d86be45acd9bf1d609",
+  "time_unit": "d",
+  "time_scale": "TDB",
+  "bjd_reference": 2457000,
+  "time_label": "BTJD",
+  "date_obs": "2018-07-25T19:03:28.215",
+  "date_end": "2018-08-22T16:14:49.298",
+  "start_btjd": 1325.29487730636,
+  "end_btjd": 1353.177760209343,
+  "flux_column": "PDCSAP_FLUX",
+  "error_column": "PDCSAP_FLUX_ERR",
+  "flux_unit": "e-/s",
+  "quality_column": "QUALITY",
+  "pipeline": "spoc-5.0.10-20200904",
+  "rows": 20076,
+  "preparation": {
+    "quality_bitmask": "none",
+    "operations": [
+      "exportación literal de cinco columnas"
+    ],
+    "search": {
+      "target": "TIC 261136679",
+      "mission": "TESS",
+      "author": "SPOC",
+      "sector": 1,
+      "exptime": 120
+    }
+  },
+  "versions": {
+    "lightkurve": "2.6.0",
+    "astropy": "7.2.0",
+    "numpy": "2.4.2",
+    "pandas": "2.3.3",
+    "scipy": "1.17.0"
+  },
+  "csv_file": "pi-mensae-sector1-c2e077f42118.csv",
+  "csv_sha256": "c2e077f4211825bd76085b51afb0853ca0ac248b81e34baef0879c71234d4911"
+}
