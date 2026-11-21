@@ -72,6 +72,13 @@ docker compose up --no-build
 
 Construye la imagen antes del evento. El contenedor escucha en el puerto 8000 del equipo local. Docker Compose incluye una comprobación de salud del respaldo.
 
+## Despliegue en Render y Vercel
+
+- **Render:** importa el repositorio como Blueprint desde su raíz. `render.yaml` define el servicio Python, el comando de inicio y la comprobación del respaldo. Configura `COSMOS_CORS_ORIGINS` con el origen HTTPS de Vercel tal como aparece en su dominio de producción. Puedes autorizar varios orígenes exactos separados por comas.
+- **Vercel:** importa el mismo repositorio y selecciona `frontend` como directorio raíz. Configura `VITE_API_URL` con la URL HTTPS de Render, sin `/api`, antes de compilar. `frontend/vercel.json` selecciona Vite y publica `dist`.
+
+Comprueba `/api/health` en Render y abre **Observaciones TESS** en el sitio de Vercel para verificar que la curva y la carga FITS llegan al backend. La versión local usa el mismo origen cuando `VITE_API_URL` está vacía.
+
 ## Material de la charla
 
 - [Guion de la demostración](docs/DEMO_SCRIPT.md)

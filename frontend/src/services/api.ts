@@ -17,6 +17,8 @@ export type Metadata = {
   refresh_detail?: string
 }
 
+const apiRoot = (import.meta.env.VITE_API_URL ?? '').trim().replace(/\/+$/, '') + '/api/'
+
 export type LoadedObservations = { dataset_id?: string; metadata: Metadata; curve: Observations }
 
 export type Observations = {
@@ -102,7 +104,7 @@ export type Simulation = {
 }
 
 export async function request<T>(path: string, payload?: object, signal?: AbortSignal): Promise<T> {
-  const response = await fetch('/api/' + path, {
+  const response = await fetch(apiRoot + path, {
     ...(payload ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) } : {}),
     signal,
   })
@@ -111,7 +113,7 @@ export async function request<T>(path: string, payload?: object, signal?: AbortS
 
 export async function uploadObservations(file: File, signal: AbortSignal): Promise<LoadedObservations> {
   const query = new URLSearchParams({ filename: file.name })
-  const response = await fetch('/api/dataset/import?' + query, {
+  const response = await fetch(apiRoot + 'dataset/import?' + query, {
     method: 'POST', headers: { 'Content-Type': 'application/octet-stream' }, body: file, signal,
   })
   return parseResponse<LoadedObservations>(response)

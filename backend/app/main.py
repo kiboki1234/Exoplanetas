@@ -1,7 +1,9 @@
 import logging
+import os
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -11,6 +13,10 @@ from .science.validation import DatasetError
 
 
 app = FastAPI(title="COSMOS LAB", version="1.0.0", docs_url=None, redoc_url=None)
+origins = [value.strip().rstrip("/") for value in os.getenv("COSMOS_CORS_ORIGINS", "").split(",") if value.strip()]
+if origins:
+    app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
+                       allow_headers=["Content-Type"])
 app.include_router(router)
 
 

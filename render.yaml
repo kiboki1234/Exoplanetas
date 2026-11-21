@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cosmos-lab-api
+    runtime: python
+    plan: free
+    buildCommand: python -m pip install -r backend/requirements.txt
+    startCommand: python -m uvicorn backend.app.main:app --host 0.0.0.0 --port "$PORT"
+    healthCheckPath: /api/dataset/metadata
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.12"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+      - key: COSMOS_CORS_ORIGINS
+        sync: false
