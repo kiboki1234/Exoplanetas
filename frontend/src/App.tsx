@@ -2,9 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import {
   Activity, ArrowLeft, ArrowRight, AudioLines, Check, CircleHelp, Contrast, Filter, Keyboard,
-  Maximize, Minimize, Orbit, Pause, Play, Radio, RotateCcw, Satellite, ScanLine, Sparkles,
+  Gamepad2, Maximize, Minimize, Orbit, Pause, Play, Radio, RotateCcw, Satellite, ScanLine, Sparkles,
 } from 'lucide-react'
 import { Status } from './components/ui'
+import { TessGame } from './game/TessGame'
 import { BlsScene, FoldScene, initialFold, ResultScene, type FoldSelection } from './scenes/AnalysisScenes'
 import { CleanScene, NoData, RawScene, SourceScene } from './scenes/DataScenes'
 import { SimulationScene } from './scenes/SimulationScene'
@@ -36,6 +37,7 @@ const initialNavigation = { scene: 0, visited: [0] }
 
 export function App() {
   const [navigation, setNavigation] = useState(initialNavigation)
+  const [gameOpen, setGameOpen] = useState(false)
   const [revision, setRevision] = useState(0)
   const [dataset, setDataset] = useState<LoadedObservations>()
   const [loading, setLoading] = useState(false)
@@ -82,6 +84,7 @@ export function App() {
     })
   }, [])
   useEffect(() => {
+    if (gameOpen) return
     const handle = (event: KeyboardEvent) => {
       const target = event.target
       if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
@@ -91,13 +94,13 @@ export function App() {
     }
     window.addEventListener('keydown', handle)
     return () => window.removeEventListener('keydown', handle)
-  }, [scene, go])
+  }, [scene, gameOpen, go])
   useEffect(() => {
-    if (shouldFocus.current) {
+    if (!gameOpen && shouldFocus.current) {
       heading.current?.focus({ preventScroll: true })
       shouldFocus.current = false
     }
-  }, [scene])
+  }, [scene, gameOpen])
 
   const loadObservations = async (retrieve: (signal: AbortSignal) => Promise<LoadedObservations>) => {
     dataRequest.current?.abort()
@@ -182,15 +185,15 @@ export function App() {
       : ready === true ? 'Modo offline · respaldo verificado' : ready === false ? 'Respaldo pendiente' : 'Verificando respaldo local'
   const CurrentIcon = steps[scene].icon
   const page = (index: number) => {
-    if (index === 0) return <SimulationScene paused={paused || index !== scene} reduced={reduced} />
+    if (index === 0) return <SimulationScene paused={paused || gameOpen || index !== scene} reduced={reduced} />
     if (index === 1) return <SourceScene metadata={metadata} loading={loading} error={loadError} mode={mode}
       onLoad={() => void load()} onRefresh={() => void load(true)} onCurve={() => go(2)}
       onUpload={file => void loadObservations(signal => uploadObservations(file, signal))} />
     if (index === 7) return <SummaryScene backToStart={() => go(0)} />
     if (!raw || !metadata) return <NoData load={() => void load()} goToSource={() => go(1)} loading={loading} error={loadError} />
     if (index === 2) return <RawScene raw={raw} metadata={metadata} />
-    if (index === 3) return <CleanScene raw={raw} options={options} setOptions={setOptions} active={index === scene} datasetId={datasetId} />
-    if (index === 4) return <FoldScene options={options} selection={fold} select={setFold} active={index === scene}
+    if (index === 3) return <CleanScene raw={raw} options={options} setOptions={setOptions} active={!gameOpen && index === scene} datasetId={datasetId} />
+    if (index === 4) return <FoldScene options={options} selection={fold} select={setFold} active={!gameOpen && index === scene}
       explore={explore} datasetId={datasetId} defaultFold={defaultFold} />
     if (index === 5) return <BlsScene result={result} busy={searching} error={searchError} onSearch={search}
       onSelect={(selection, preparation) => { setFold(selection); setOptions(preparation); go(4) }} />
@@ -204,21 +207,27 @@ export function App() {
     6: 'Revisa el período, la profundidad y la duración estimados con tu archivo.',
   } as Record<number, string>)[scene] ?? steps[scene].lead : steps[scene].lead
 
-  return <div className={'lab' + (presentation ? ' in-presentation' : '') + (contrast ? ' high-contrast' : '')}>
+  const presentationLabel = presentation ? 'Salir de presentación' : 'Modo Presentación'
+
+  return <div className={'lab' + (gameOpen ? ' in-game' : '') + (presentation ? ' in-presentation' : '') + (contrast ? ' high-contrast' : '')}>
     <header className="app-header">
-      <button className="brand" onClick={() => go(0)} aria-label="COSMOS LAB, ir al inicio">
+      <button className="brand" onClick={() => { setGameOpen(false); go(0) }} aria-label="COSMOS LAB, ir al inicio">
         <span className="brand-icon"><Orbit size={28} strokeWidth={1.8} /></span>
         <span><strong>COSMOS <b>LAB</b></strong><small>Explorador de exoplanetas con Python</small></span>
       </button>
       <div className="header-actions flex items-center gap-2">
         <span className="offline-pill"><span className={ready ? 'ready' : ''} />{ready === false ? 'Respaldo pendiente' : 'Modo offline'}</span>
-        <button className="button presentation-button" onClick={() => void fullscreen()}>
-          {presentation ? <Minimize size={17} /> : <Maximize size={17} />}{presentation ? 'Salir de presentación' : 'Modo Presentación'}
+        <button className="button game-toggle" aria-label={gameOpen ? 'Volver al laboratorio' : 'Jugar Cazadores de mundos ocultos'}
+          onClick={() => { shouldFocus.current = gameOpen; setGameOpen(!gameOpen) }}>
+          {gameOpen ? <ArrowLeft size={17} /> : <Gamepad2 size={18} />}{gameOpen ? 'Laboratorio' : 'Jugar'}
         </button>
-        <button className="button icon-button desktop-only" title="Reiniciar toda la demostración" aria-label="Reiniciar toda la demostración" onClick={reset}><RotateCcw size={18} /></button>
+        <button className="button presentation-button" aria-label={presentationLabel} title={presentationLabel} onClick={() => void fullscreen()}>
+          {presentation ? <Minimize size={17} /> : <Maximize size={17} />}<span>{presentationLabel}</span>
+        </button>
+        <button hidden={gameOpen} className="button icon-button desktop-only" title="Reiniciar toda la demostración" aria-label="Reiniciar toda la demostración" onClick={reset}><RotateCcw size={18} /></button>
       </div>
     </header>
-    <div className="workspace">
+    <div className="workspace" hidden={gameOpen}>
       <aside className="sidebar">
         <div className="side-title"><span>RECORRIDO</span><span>{stepNumber(scene)} / 08</span></div>
         <nav aria-label="Escenas de la demostración">
@@ -252,7 +261,8 @@ export function App() {
         </div>
       </main>
     </div>
-    <footer className="app-footer">
+    {gameOpen ? <TessGame /> : null}
+    <footer className="app-footer" hidden={gameOpen}>
       <div className="footer-tools">
         <span className="keyboard-hint"><Keyboard size={17} /> <kbd>←</kbd><kbd>→</kbd> Cambiar escena</span>
         <button className="button icon-button quiet mobile-only" onClick={reset} title="Reiniciar toda la demostración" aria-label="Reiniciar toda la demostración"><RotateCcw size={17} /></button>

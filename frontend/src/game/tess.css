@@ -1,0 +1,165 @@
+.lab.in-game { grid-template-rows: 74px minmax(0, 1fr); }
+.button.game-toggle, .button.tess-primary {
+  background: var(--gold);
+  border-color: #ffe1af;
+  color: #2a2018;
+  font-weight: 700;
+}
+.button.game-toggle:not(:disabled):hover, .button.tess-primary:not(:disabled):hover {
+  background: #ffe5bd;
+  border-color: #fff4e1;
+}
+.tess-game { min-width: 0; background: radial-gradient(ellipse at 73% 0%, #211e3b, transparent 57%); }
+.tess-shell { width: min(100%, 1540px); margin-inline: auto; padding: clamp(16px, 3.3vw, 52px); }
+.tess-hero { margin-bottom: 24px; }
+.tess-hero .tess-mission-name { display: flex; align-items: center; gap: 7px; color: var(--cyan); font-weight: 680; letter-spacing: .18em; font-size: .84rem; }
+.tess-hero h1 { margin: 7px 0 0; color: #f5f5fc; font-size: clamp(2.45rem, 6vw, 5.1rem); font-weight: 700; line-height: .99; letter-spacing: -.065em; }
+.tess-hero p { color: var(--muted); margin: 10px 0 0; font-size: clamp(.93rem, 1.35vw, 1.18rem); }
+.tess-game h2, .tess-game h3 { font-weight: 660; letter-spacing: -.035em; line-height: 1.13; }
+.tess-game h2 { margin: 0; font-size: clamp(1.3rem, 2vw, 1.8rem); }
+.tess-game h3 { font-size: 1.2rem; }
+.tess-game .button { min-height: 40px; }
+.tess-modebar, .tess-ops, .tess-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px 14px; flex-wrap: wrap; }
+.tess-modebar { padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.tess-ops { padding: 17px 0 12px; }
+.tess-ops h2 { font-size: 1.23rem; }
+.tess-inline { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-width: 0; }
+.tess-modebar .button[aria-pressed='true'] { background: #2b233c; color: var(--gold); border-color: #6b543c; }
+.tess-data-label, .tess-tag, .tess-score { display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 22px; font-size: .78rem; }
+.tess-data-label, .tess-score, .tess-tag { color: var(--gold); border: 1px solid #66523c; background: #211d2c; }
+.tess-data-label.authentic-data { color: var(--cyan); background: #112c3e; border-color: #315671; }
+.tess-flight, .tess-lab-layout { display: grid; align-items: start; gap: 13px; grid-template-columns: minmax(0, 1fr) minmax(235px, 285px); }
+.tess-card { min-width: 0; border: 1px solid var(--line); border-radius: 14px; background: #0d192e; }
+.tess-panel { padding: clamp(13px, 1.6vw, 22px); }
+.tess-panel p { margin: 8px 0 0; color: var(--muted); line-height: 1.48; font-size: .92rem; }
+.tess-panel-head { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px; }
+.tess-panel-head > svg { color: var(--cyan); flex: 0 0 auto; margin-top: 3px; }
+.tess-panel-head p { margin: 4px 0 0; font-size: .84rem; }
+.tess-panel-head .tess-tag { margin-left: auto; white-space: nowrap; }
+.tess-panel .tess-warning, .tess-warning { color: var(--gold); }
+.tess-sky-card { overflow: hidden; }
+.tess-sky {
+  position: relative;
+  height: clamp(295px, 35vw, 480px);
+  min-width: 0;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 78% 20%, #211728 0%, transparent 53%),
+    radial-gradient(ellipse at 19% 78%, #142342 0%, transparent 63%),
+    #040913;
+}
+.tess-sky canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.tess-sky canvas:active { cursor: grabbing; }
+.tess-sky canvas:focus-visible { outline-offset: -4px; }
+.tess-sky-heading, .tess-sky-caption { position: absolute; inset-inline: 0; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; padding: 13px 16px; }
+.tess-sky-heading { top: 0; color: #e8efff; background: linear-gradient(#050915cf, transparent); }
+.tess-sky-heading strong { font-size: 1.2rem; }
+.tess-sky-heading span, .tess-sky-caption { font-size: .8rem; color: var(--muted); }
+.tess-sky-caption { bottom: 0; background: linear-gradient(transparent, #050915cf); }
+.tess-reticle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--cyan); opacity: .65; pointer-events: none; }
+.tess-reticle.locked { color: var(--gold); opacity: 1; filter: drop-shadow(0 0 6px #ffc87f); }
+.tess-fov {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  border-inline: 1px dashed #58769577;
+  pointer-events: none;
+}
+.tess-toolbar { padding: 9px 11px; border-top: 1px solid var(--line); }
+.tess-toolbar .button { min-height: 34px; }
+.tess-toolbar .icon-button { min-width: 32px; }
+.tess-mission { background: #101b31; }
+.tess-steps { display: grid; gap: 5px; margin: 0 0 16px; padding: 0; list-style: none; }
+.tess-steps li { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .88rem; border-radius: 7px; padding: 5px 8px; }
+.tess-steps li span { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--line); border-radius: 50%; font-variant-numeric: tabular-nums; }
+.tess-steps [aria-current] { color: var(--gold); font-weight: 680; background: #28223a; }
+.tess-steps [aria-current] span { background: var(--gold); color: #261d17; }
+.tess-steps .done { color: var(--cyan); }
+.tess-sector { display: grid; gap: 4px; font-size: .84rem; color: var(--muted); margin: 11px 0; }
+.tess-sector select, .tess-report-note textarea {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: #e4edfc;
+  background: var(--button);
+  padding: 6px 9px;
+}
+.tess-targets { display: grid; gap: 6px; }
+.tess-targets .button { justify-content: start; }
+.tess-targets small, .tess-targets .lucide-lock-keyhole { margin-left: auto; }
+.tess-target-star { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; box-shadow: 0 0 10px #e9eeff7a; }
+.tess-console { display: grid; min-width: 0; gap: 13px; }
+.tess-console h2 { font-size: 1.23rem; }
+.tess-actions { margin-top: 13px; }
+.tess-actions .button, .tess-report-result .button { white-space: normal; text-align: left; }
+.tess-sensor { display: grid; grid-template-columns: minmax(145px, 205px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.tess-console .tess-sensor { grid-template-columns: minmax(0, 1fr); gap: 9px; margin-top: 13px; }
+.tess-console .tess-pixels { width: min(100%, 170px); }
+.tess-pixels { display: grid; grid-template-columns: repeat(var(--detector-side, 7), minmax(0, 1fr)); gap: 3px; }
+.tess-pixels button { aspect-ratio: 1; border: 1px solid #29364d; border-radius: 3px; }
+.tess-pixels button.in-aperture { border-color: #5e97c4; }
+.tess-pixels button.in-background { border-style: dotted; border-color: #a2a5b7; }
+.tess-pixels button[aria-pressed='true'] { outline: 2px solid var(--gold); outline-offset: -1px; }
+.tess-pixels button:focus-visible { outline: 2px dashed #fff; outline-offset: 1px; z-index: 1; }
+.tess-sensor-readout dl { display: grid; gap: 4px; margin: 7px 0; }
+.tess-sensor-readout dl div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; max-width: 430px; color: var(--muted); font-size: .9rem; }
+.tess-sensor-readout dd { color: var(--cyan); font-variant-numeric: tabular-nums; }
+.tess-archive { min-height: 276px; display: grid; justify-items: start; align-content: center; gap: 8px; }
+.tess-archive > svg { color: var(--cyan); }
+.tess-archive a { font-size: .89rem; text-decoration: underline; }
+.tess-workbench { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.tess-plot { display: flex; height: clamp(225px, 24vw, 345px); min-width: 0; }
+.tess-checks { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 10px 0 13px; font-size: .85rem; }
+.tess-checks label { display: flex; align-items: center; gap: 5px; }
+.tess-game input:is([type='checkbox'], [type='radio']) { accent-color: #79e4ed; }
+.tess-results { display: flex; flex-wrap: wrap; gap: 9px 16px; margin: 12px 0 4px; }
+.tess-results div { display: grid; gap: 3px; }
+.tess-results span { font-size: .73rem; color: var(--muted); }
+.tess-results strong { color: var(--gold); font-size: 1rem; }
+.tess-details { margin-top: 13px; border-top: 1px solid var(--line); padding: 6px 0; }
+.tess-details summary { display: list-item; color: var(--cyan); }
+.tess-details summary svg { display: inline-block; vertical-align: -.22em; margin-inline: 3px; }
+.tess-details pre { margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; color: #bed1ec; font-size: .8rem; }
+.tess-report-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 12px; margin: 16px 0; }
+.tess-report-grid fieldset { border: 1px solid var(--line); min-width: 0; padding: 8px 11px 10px; border-radius: 9px; }
+.tess-report-grid legend { color: var(--cyan); font-weight: 650; padding-inline: 4px; }
+.tess-report-grid label { display: flex; align-items: baseline; gap: 6px; padding: 5px 0; font-size: .9rem; line-height: 1.35; }
+.tess-report-grid input { flex: 0 0 auto; }
+.tess-report-grid small, .tess-journal small { display: block; color: var(--muted); }
+.tess-report-note { display: block; color: #e7efff; font-size: .9rem; }
+.tess-report-note span { color: var(--muted); font-size: .81rem; }
+.tess-report-note textarea { display: block; resize: vertical; margin-top: 6px; }
+.tess-journal { margin-top: 15px; }
+.tess-journal ul { display: grid; gap: 7px; }
+.tess-journal li { display: flex; align-items: center; justify-content: space-between; gap: 7px; border-block-end: 1px solid var(--line); padding: 4px 0 8px; }
+.tess-journal blockquote { margin: 16px 0 0; border-left: 2px solid var(--gold); padding-left: 12px; color: var(--gold); }
+
+@media (max-width: 1120px) {
+  .tess-workbench { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 900px) {
+  .lab.in-game { grid-template-rows: 65px minmax(0, 1fr); }
+}
+@media (max-width: 710px) {
+  .tess-flight, .tess-lab-layout { grid-template-columns: minmax(0, 1fr); }
+  .tess-hero { margin-bottom: 17px; }
+  .tess-sky { height: 275px; }
+  .tess-shell { padding-inline: 12px; }
+  .tess-report-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .presentation-button > span { display: none; }
+  .button.presentation-button { min-width: 36px; }
+  .header-actions .game-toggle { min-height: 36px; padding: 5px 8px; font-size: .78rem; }
+  .tess-modebar .button { padding-inline: 8px; font-size: .8rem; }
+  .tess-panel-head { flex-wrap: wrap; }
+  .tess-panel-head .tess-tag { margin-left: 0; }
+  .tess-sensor { grid-template-columns: minmax(0, 1fr); }
+  .tess-pixels { max-width: 185px; }
+}
+@media (max-width: 380px) {
+  .in-game .brand strong { font-size: .86rem; }
+}

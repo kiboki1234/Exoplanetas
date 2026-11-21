@@ -10,10 +10,12 @@ from ..science.fits_upload import MAX_FITS_BYTES, read_lightcurve
 from ..science.loader import Dataset, load_dataset
 from ..science.preprocessing import prepare
 from ..science.validation import DatasetError
+from .game import router as game_router
 from .imported import active_dataset, remember
 
 
 router = APIRouter(prefix="/api")
+router.include_router(game_router)
 Observations = Annotated[Dataset, Depends(active_dataset)]
 
 

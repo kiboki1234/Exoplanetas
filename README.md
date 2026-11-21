@@ -27,6 +27,18 @@ Para seleccionar otro ejecutable de Python 3.13, define `COSMOS_PYTHON` antes de
 
 Abre [COSMOS LAB en localhost](http://127.0.0.1:8000) y pulsa **Modo Presentación**. Las flechas cambian de escena. La barra inferior permite pausar el movimiento, desactivar animaciones y activar el alto contraste. La API local también ofrece [OpenAPI JSON](http://127.0.0.1:8000/openapi.json).
 
+## TESS: Cazadores de mundos ocultos
+
+Pulsa **Jugar** en COSMOS LAB. En **Educativo**, mueve la cámara en el visor 3D o usa **Centrar**, captura una imagen y acumula entre 8 y 24 días simulados. La curva de luz procede de la suma de los píxeles de la apertura. En el laboratorio puedes comparar la curva original y la procesada, filtrar indicadores de calidad y buscar períodos con BLS y TLS. Completa tu primer informe con una conclusión correcta y evidencia para desbloquear TLS y avanzar. Las cinco misiones incluyen un candidato a planeta, una binaria, un cuerpo menor, una estrella variable y un artefacto instrumental.
+
+En **Científico**, BLS y TLS usan la curva auténtica del sector 1 de Pi Mensae, incluida en el respaldo local. El visor y el detector de la campaña son simulaciones. BLS usa Astropy y TLS usa el paquete `transitleastsquares`. Para TLS se agrupan las cadencias en intervalos de diez minutos. La primera ejecución puede tardar más por la compilación del algoritmo.
+
+El detector simulado usa un recorte de 7 × 7 píxeles, exposiciones de 30 minutos, fotones con ruido de Poisson, ruido de lectura y variaciones de apuntado. La campaña incluye un hueco de descarga de datos. Puedes cambiar la apertura y medir de nuevo las mismas exposiciones. El fondo se estima con la mediana de los píxeles marcados y la incertidumbre combina ruido de fotones, lectura y estimación del fondo. El visor usa un campo nominal de 24° por cámara. [Instrumento TESS](https://heasarc.gsfc.nasa.gov/docs/tess/telescope_information.html)
+
+En **Conferencia**, usa **Modo Presentación** y recorre la captura, la comparación de dos estrellas simuladas y el análisis real de Pi Mensae en unos 12 minutos. El registro guarda en el navegador el mejor informe por estrella y permite exportarlo como texto. **Laboratorio** vuelve a la escena de COSMOS LAB que estaba abierta.
+
+Si actualizas una instalación local existente, instala las dependencias de `backend/requirements.txt` en el entorno virtual antes de iniciar la nueva versión.
+
 ## Analizar el FITS de otra estrella
 
 1. En **Observaciones TESS**, pulsa **Cargar archivo FITS**.
@@ -74,8 +86,8 @@ Construye la imagen antes del evento. El contenedor escucha en el puerto 8000 de
 
 ## Despliegue en Render y Vercel
 
-- **Render:** importa el repositorio como Blueprint desde su raíz. `render.yaml` define el servicio Python, el comando de inicio y la comprobación del respaldo. Configura `COSMOS_CORS_ORIGINS` con el origen HTTPS de Vercel tal como aparece en su dominio de producción. Puedes autorizar varios orígenes exactos separados por comas.
-- **Vercel:** importa el mismo repositorio y selecciona `frontend` como directorio raíz. Configura `VITE_API_URL` con la URL HTTPS de Render, sin `/api`, antes de compilar. `frontend/vercel.json` selecciona Vite y publica `dist`.
+- **Render:** el Blueprint de la raíz define el servicio Python, el inicio y la comprobación del respaldo. El servicio del proyecto es `cosmos-lab-api.onrender.com`.
+- **Vercel:** importa el mismo repositorio y selecciona `frontend` como directorio raíz. `frontend/vercel.json` publica `dist` y reenvía `/api/*` al servicio de Render. Deja `VITE_API_URL` vacía para usar esta ruta. Si conectas directamente a un backend distinto, fija `VITE_API_URL` con su origen HTTPS y autoriza el origen de Vercel en `COSMOS_CORS_ORIGINS` del backend.
 
 Comprueba `/api/health` en Render y abre **Observaciones TESS** en el sitio de Vercel para verificar que la curva y la carga FITS llegan al backend. La versión local usa el mismo origen cuando `VITE_API_URL` está vacía.
 
